@@ -1,4 +1,4 @@
 all:
 	gcc -o search search.c
 clean:
-	rm search
+	rm search 2>/dev/null
