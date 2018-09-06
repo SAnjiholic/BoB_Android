@@ -1,11 +1,14 @@
 #!/usr/bin/env perl
 
-chomp $_;
-s/\$/\\\$/g;
+chomp $_; s/\$/\\\$/g;
 if(/.*\.smali$/){
-	print $_."\n";
-$text = `cat $_`;
-$ret = split_smali($text,$_);
+	$text = `cat $_`;
+	$ret = split_smali($text,$_);
+	print "change $_\n";
+	s/\\//g;
+	open my $fh, ">", $_;
+	print $fh $ret;
+	close $fh;
 }
 
 sub split_smali{
@@ -51,7 +54,7 @@ sub injection_smali{
 	my $v1 = $count -2;
 	my $v2 = $count -1;
 	$code .= "\n    const-string v" . $v1 . ', "smali name : '. $file_name . "\"\n";
-	$code .= "    const-string v" . $v2 .", \"invoke number : ".$invoke_count."\"\n";
+	$code .= "    const-string v" . $v2 .", \"method count  : ".$invoke_count."\"\n";
 	$code .= "    invoke-static {v" .$v1 .", v".$v2 ."}, Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;)V\n\n    invoke-";
 
 	$old_method =~ s/invoke-/$code/g;
