@@ -4,7 +4,7 @@ chomp $_;
 $text = `cat $_`;
 $ret = split_smali($text,$_);
 
-$a = `echo $_ > ./test_smali_d/$_`;
+#$a = `echo $_ > ./test_smali_d/$_`;
 #print $ret;
 
 sub split_smali{
@@ -20,7 +20,7 @@ sub split_smali{
 			$method .= $line."\n";
 		}	
 		elsif($met_flag == -1){
-			$hea	der .= $line."\n";
+			$header .= $line."\n";
 		}	
 		if($line =~ /^\.end method/){
 			$met_flag = 0;
