@@ -18,7 +18,6 @@ void ret_listd(char *dir_name, char *now_dir, int level){
 }
 
 void my_search_dir(DIR *search_dir, int level, char *root_dir){
-	char *_level = "  =>";
 	char *n_name;
 	struct dirent *dnt;
 	struct stat st;
@@ -29,13 +28,12 @@ void my_search_dir(DIR *search_dir, int level, char *root_dir){
 			lstat(n_name,&st);
 			if(S_ISDIR(st.st_mode)){
 				if(strcmp(dnt->d_name,".") && strcmp(dnt->d_name,"..")){
-					//printf("%s/%s : dir\n",root_dir,dnt->d_name);
 					level++;
 					ret_listd(dnt->d_name,root_dir,level);
 				}
 			}
 			else{
-				printf("%s : file \n",n_name);
+				printf("%s\n",n_name);
 			}
 			free(n_name);
 		}
@@ -43,10 +41,15 @@ void my_search_dir(DIR *search_dir, int level, char *root_dir){
 }
 
 int main(int argc, char *argv[]){
+	if (argc != 2){
+		printf("insert search directory\n");
+		return -1;
+	}
+
 	DIR *dir;
 	int level = 0;
 	struct dirent *ent;
-	char *root_dir = ""; // input search dir 
+	char *root_dir = argv[1]; // input search dir 
 	dir = opendir (root_dir);
 	if (dir != NULL){
 		my_search_dir(dir, level, root_dir);
