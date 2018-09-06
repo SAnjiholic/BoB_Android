@@ -1,11 +1,12 @@
 #!/usr/bin/env perl
 
 chomp $_;
+s/\$/\\\$/g;
+if(/.*\.smali$/){
+	print $_."\n";
 $text = `cat $_`;
 $ret = split_smali($text,$_);
-
-#$a = `echo $_ > ./test_smali_d/$_`;
-#print $ret;
+}
 
 sub split_smali{
 	my ($text, $dir) = @_;
@@ -55,6 +56,5 @@ sub injection_smali{
 
 	$old_method =~ s/invoke-/$code/g;
 	$old_method =~ s/(locals) (\d)/locals $count/g;
-	print $old_method;
 	return $old_method;
 }
